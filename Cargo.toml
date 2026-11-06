@@ -3,4 +3,13 @@ name = "blog"
 version = "0.1.0"
 edition = "2024"
 
+[workspace]
+members = ["components/circle"]
+resolver = "3"
+
 [dependencies]
+jiff = { version = "0.2", default-features = false, features = ["std"] }
+pulldown-cmark = "0.13"
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.9"
+

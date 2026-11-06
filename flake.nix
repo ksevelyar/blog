@@ -26,44 +26,43 @@
             version = cargoToml.package.version;
             src = ./.;
             cargoLock.lockFile = ./Cargo.lock;
-
-            SQLX_OFFLINE = "true";
-            RUSTFLAGS = "--cfg tokio_unstable";
             doCheck = false;
           };
 
           devShells.default = mkShell {
             buildInputs = [
-              cargo-watch
-              websocat
-              sqlx-cli
-
-              rust-analyzer
-              postgres-language-server
-              tokio-console
-
               (rust-bin.stable.latest.default.override {
                 extensions = ["rust-src"];
+                targets = ["wasm32-unknown-unknown"];
               })
+              rust-analyzer
+              wasm-bindgen-cli
+              cargo-watch
+              miniserve
+              nodejs_22
+
+              (writeShellScriptBin "serve" ''
+                set -euo pipefail
+                cargo run
+                miniserve "$OUTPUT" --index index.html --interfaces 127.0.0.1 --port 8000 &
+                server_process_id=$!
+                trap 'kill "$server_process_id" 2>/dev/null || true; wait "$server_process_id" 2>/dev/null || true' EXIT
+                printf '%s\n' 'Serving the generated site at http://blog.localhost:8000/'
+                cargo watch --postpone --watch src --watch components --watch posts --watch assets --watch Cargo.toml --watch Cargo.lock --exec run
+              '')
 
               (writeShellScriptBin "ci" ''
                 set -euo pipefail
-                cargo sqlx migrate run
-                cargo sqlx prepare
                 cargo fmt --all -- --check --color always
                 cargo clippy --all-features --workspace -- -D warnings
-                cargo test
-
+                cargo run
+                cargo test --workspace --all-features
                 nix build
               '')
             ];
-            DATABASE_URL = "postgres://postgres:postgres@localhost:5432/habits_axum";
-            CORS_ORIGINS = "http://habits.lcl:3000,http://localhost:3000";
-            RUST_LOG = "info";
-            JWT_SECRET = "very secret";
-            TELEGRAM_BOT_TOKEN = "";
-            TELEGRAM_BOT_USERNAME = "";
-            RUSTFLAGS = "--cfg tokio_unstable";
+            SOURCE = "posts";
+            OUTPUT = "dist";
+            SITE_URL = "https://ksevelyar.rusty-cluster.net";
           };
         }
     );

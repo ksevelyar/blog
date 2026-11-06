@@ -1,0 +1,95 @@
+:root {
+  color-scheme: dark;
+  background-color: #302b35;
+  color: #f4eff7;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+.blog {
+  min-height: 100vh;
+  margin: 0;
+  background-color: #302b35;
+  color: #f4eff7;
+  line-height: 1.65;
+}
+
+.blog__content {
+  width: min(80ch, calc(100% - 2rem));
+  margin-inline: auto;
+  padding-block: 3rem;
+}
+
+.blog h1,
+.blog h2,
+.blog h3 {
+  line-height: 1.2;
+}
+
+.blog h1 {
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+.blog a {
+  color: #c6a7ff;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+.blog a:hover {
+  color: #e6d5ff;
+}
+
+.blog a:focus-visible {
+  outline: 3px solid #e6d5ff;
+  outline-offset: 3px;
+}
+
+.post-index__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 4px;
+}
+
+.post-index__title {
+  margin-bottom: 0;
+}
+
+.post-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.post-list__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.post-list__date,
+.post__date {
+  color: #d3cadb;
+  font-size: 0.9em;
+}
+
+.post__date {
+  display: block;
+  margin-block-end: 1rem;
+}
+
+.blog img,
+.blog svg,
+.blog video {
+  max-width: 100%;
+}
+
+::selection {
+  background-color: #c6a7ff;
+  color: #211d26;
+}
